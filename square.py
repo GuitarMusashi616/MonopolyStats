@@ -1,3 +1,15 @@
+from card import ChanceDeck, CommunityDeck
+
+class Property:
+    BROWN = 0
+    TEAL = 1
+    PINK = 2
+    ORANGE = 3
+    RED = 4
+    YELLOW = 5
+    GREEN = 6
+    BLUE = 7
+
 class Square:
     def __init__(self, name):
         self.name = name
@@ -40,7 +52,9 @@ class CommunitySquare(Invokable, Square):
         super().__init__(name)
 
     def invoke(self, player, squares):
-        return True
+        deck = CommunityDeck()
+        card = deck.pop()
+        card.execute(player, squares)
 
 
 class ChanceSquare(Invokable, Square):
@@ -49,4 +63,6 @@ class ChanceSquare(Invokable, Square):
         super().__init__(name)
 
     def invoke(self, player, squares):
-        return True
+        deck = ChanceDeck()
+        card = deck.pop()
+        card.execute(player, squares)

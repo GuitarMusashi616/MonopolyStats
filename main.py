@@ -1,17 +1,4 @@
-from square import *
-from player import *
-
-
-class Property:
-    BROWN = 0
-    TEAL = 1
-    PINK = 2
-    ORANGE = 3
-    RED = 4
-    YELLOW = 5
-    GREEN = 6
-    BLUE = 7
-
+from square import Square
 
 def get_squares():
     return [
@@ -57,31 +44,12 @@ def get_squares():
         PropertySquare('Boardwalk', Property.BLUE),
     ]
 
-def get_chance():
-    return [
-        AdvanceTo(0),
-        AdvanceTo(24),
-        AdvanceTo(11),
-        NearestUtility(),
-        NearestRailroad(),
-        GetCash(50),
-        JailFreeCard(),
-        GoBack(3),
-        GoToJail(),
-        Repairs(25),
-        LoseCash(15),
-        AdvanceTo(5),
-        AdvanceTo(39),
-        PayCash(50),
-        GetCash(150),
-    ]
-
 
 def turn(player, dice, squares):
     is_doubles = True
     while is_doubles:
         tiles_moved, is_doubles = dice.roll()
-        move(player, squares, tiles_moved)
+        move(tiles_moved, player, squares)
 
 
 def move(tiles_moved, player, squares):
@@ -93,8 +61,8 @@ def teleport(square_num, player, squares):
     square = squares[player.position]
     square.visits += 1
 
-    if square is Invokable:
-        square.invoke(player)
+    if issubclass(type(square), Invokable):
+        square.invoke(player, squares)
 
 
 def play():
@@ -103,7 +71,7 @@ def play():
     players = [Player('player1'), Player('player2')]
     dice = Dice()
 
-    for i in range(10000):
+    for i in range(100):
         for player in players:
             turn(player, dice, squares)
 
