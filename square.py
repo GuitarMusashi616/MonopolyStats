@@ -39,7 +39,7 @@ class CommunitySquare(Invokable, Square):
         name = "Community Chest"
         super().__init__(name)
 
-    def invoke(self, player):
+    def invoke(self, player, squares):
         return True
 
 
@@ -48,5 +48,5 @@ class ChanceSquare(Invokable, Square):
         name = "Chance"
         super().__init__(name)
 
-    def invoke(self, player):
+    def invoke(self, player, squares):
         return True

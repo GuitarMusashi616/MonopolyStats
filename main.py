@@ -14,7 +14,7 @@ class Property:
 
 
 def get_squares():
-    squares = [
+    return [
         Square('GO'),
         PropertySquare('Mediterranean Avenue', Property.BROWN),
         CommunitySquare(),
@@ -56,24 +56,50 @@ def get_squares():
         Square('Luxury Tax'),
         PropertySquare('Boardwalk', Property.BLUE),
     ]
-    return squares
+
+def get_chance():
+    return [
+        AdvanceTo(0),
+        AdvanceTo(24),
+        AdvanceTo(11),
+        NearestUtility(),
+        NearestRailroad(),
+        GetCash(50),
+        JailFreeCard(),
+        GoBack(3),
+        GoToJail(),
+        Repairs(25),
+        LoseCash(15),
+        AdvanceTo(5),
+        AdvanceTo(39),
+        PayCash(50),
+        GetCash(150),
+    ]
 
 
 def turn(player, dice, squares):
     is_doubles = True
     while is_doubles:
         tiles_moved, is_doubles = dice.roll()
-        player.position += tiles_moved
-        square = squares[player.position]
-        square.visits += 1
-        # print(square.name)
+        move(player, squares, tiles_moved)
 
-        if square is Invokable:
-            square.invoke(player)
+
+def move(tiles_moved, player, squares):
+    teleport(tiles_moved + player.position, player, squares)
+
+
+def teleport(square_num, player, squares):
+    player.position = square_num
+    square = squares[player.position]
+    square.visits += 1
+
+    if square is Invokable:
+        square.invoke(player)
 
 
 def play():
     squares = get_squares()
+
     players = [Player('player1'), Player('player2')]
     dice = Dice()
 
